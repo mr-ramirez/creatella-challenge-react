@@ -10,6 +10,15 @@ export interface IProductModel {
   id: string,
   size: number,
   price: number,
-  faces: any,
-  date: any,
+  faces: string,
+  date: string,
+}
+
+export interface IProductsService {
+  getProducts(): Array<IProductModel>;
+}
+
+export interface IGetProductsRequest {
+  page: number,
+  size: number;
 }

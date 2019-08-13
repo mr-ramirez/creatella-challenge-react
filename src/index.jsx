@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import 'typeface-roboto';
+import 'babel-polyfill';
 import App from './containers/App/components/index.jsx';
 import { store } from './store';
 import * as serviceWorker from './serviceWorker';
