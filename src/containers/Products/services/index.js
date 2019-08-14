@@ -8,7 +8,10 @@ import {
 
 const ProductService = {
   getProducts(request: IGetProductsRequest) {
-    const url = `http://localhost:3000/products?_page=${request.page}&_limit=${request.size}`;
+    const page = `_page=${request.page}`;
+    const size = `_limit=${request.size}`;
+    const sortBy = `_sort=${request.sort}`;
+    const url = `http://localhost:3000/products?${page}&${size}&${sortBy}`;
 
     return fetch(url, { method: 'GET' })
       .then((response: any) => response.json())

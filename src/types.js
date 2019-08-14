@@ -20,5 +20,6 @@ export interface IProductsService {
 
 export interface IGetProductsRequest {
   page: number,
-  size: number;
+  size: number,
+  sort: string,
 }
