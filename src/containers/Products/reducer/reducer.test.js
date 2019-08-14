@@ -10,11 +10,15 @@ describe('Products Reducer', () => {
   describe('WHEN action is for requesting products', () => {
     const fakeAction  = {
       type: 'REQUEST_PRODUCTS',
+      payload: {
+        page: 2,
+      },
     };
 
     const expectedState = {
       ...initialState,
       isLoading: true,
+      page: 2,
     };
 
     it('SHOULD return updated state', () => {
@@ -55,6 +59,26 @@ describe('Products Reducer', () => {
     const expectedState = {
       ...initialState,
       errorMessage: fakeAction.payload.errorMessage,
+    };
+
+    it('SHOULD return updated state', () => {
+      const actualState = products(initialState, fakeAction);
+      expect(actualState).toEqual(expectedState);
+    });
+  });
+
+  describe('WHEN action is for changing the sort method', () => {
+    const fakeAction  = {
+      type: 'CHANGE_SORTING',
+      payload: {
+        sort: 'Something',
+      },
+    };
+
+    const expectedState = {
+      ...initialState,
+      page: 1,
+      sort: fakeAction.payload.sort,
     };
 
     it('SHOULD return updated state', () => {

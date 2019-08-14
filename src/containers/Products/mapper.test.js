@@ -1,5 +1,5 @@
 import { ConvertToProductModel } from './mapper';
-import { IProductModel } from './types';
+import { IProductModel } from '../../types';
 import CurrencyFormatter from '../../helpers/CurrencyFormatter';
 import DateFormatter from '../../helpers/DateFormatter';
 

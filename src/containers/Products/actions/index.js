@@ -22,7 +22,6 @@ export const getProducts = (request: IGetProductsRequest): void => {
       const products = await ProductService.getProducts(request);
       dispatch(storeProducts({ products }));
     } catch(error) {
-      console.log(error)
       dispatch(displayErrorMessage({ errorMessage: error }));
     }
   };
