@@ -41,9 +41,9 @@ class Products extends Component {
     this.retrieveProducts();
   }
 
-  componentDidUpdate(previousProps, previousState) {
-    const { sort: newSort } = this.state;
-    const { sort: oldSort } = previousState;
+  componentDidUpdate(previousProps) {
+    const { sort: newSort } = this.props;
+    const { sort: oldSort } = previousProps;
 
     if (newSort !== oldSort) {
       this.retrieveProducts();
@@ -118,17 +118,19 @@ class Products extends Component {
     );
   }
 
-  sortProducts(sortBy: string) {
-    if (sortBy !== this.state.sort)
-      this.setState({ page: 1, sort: sortBy });
+  sortProducts(sort: string) {
+    if (sort !== this.props.sort) {
+      this.props.actions.changeSorting({ sort });
+    }
   }
 
   retrieveProducts() {
     const { getProducts } = this.props.actions;
+
     const request: IGetProductsRequest = {
-      page: this.state.page,
-      size: this.state.size,
-      sort: this.state.sort,
+      page: this.props.page,
+      size: this.props.pageSize,
+      sort: this.props.sort,
     };
 
     getProducts(request);
@@ -162,11 +164,17 @@ class Products extends Component {
 Products.propTypes = {
   actions: PropTypes.object,
   products: PropTypes.array,
+  page: PropTypes.number,
+  pageSize: PropTypes.number,
+  sort: PropTypes.string,
 };
 
 const mapStateToProps = (state: IProductsState) => ({
   isLoading: state.products.isLoading,
   products: state.products.products,
+  page: state.products.page,
+  pageSize: state.products.pageSize,
+  sort: state.products.sort,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
