@@ -5,5 +5,9 @@ module.exports = {
     path.resolve(__dirname, './src/setupTests.js'),
   ],
   collectCoverage: true,
-  collectCoverageFrom: ['src/**/*.{js,jsx}'],
+  collectCoverageFrom: [
+    'src/containers/**/*.{js,jsx}',
+    'src/components/**/*.{js,jsx}',
+    'src/helpers/**/*.{js,jsx}',
+  ],
 };

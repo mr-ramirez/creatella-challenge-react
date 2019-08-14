@@ -9,14 +9,16 @@ import Typography from '@material-ui/core/Typography';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
 
 import './Products.css';
 import { IProductModel, IProductsState, IGetProductsRequest } from '../../../types.js';
-import * as ProductActions from '../actions/index.js'
+import * as ProductActions from '../actions/index.js';
+import SortTypes from '../sortTypes';
+import ProductTableHead from './ProductTableHead.jsx';
+import ProductTableBody from './ProductTableBody.jsx';
 
 const styles = {
   PageTitle: {
@@ -27,19 +29,41 @@ const styles = {
 class Products extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      page: 1,
+      size: 20,
+      sort: SortTypes.ID,
+    };
   }
 
   componentDidMount() {
-    const { getProducts } = this.props.actions;
-    const request: IGetProductsRequest = {
-      page: 1,
-      size: 10,
-    };
-
-    getProducts(request);
+    this.retrieveProducts();
   }
 
-  getProductRow(product, key) {
+  componentDidUpdate(previousProps) {
+    const { sort: newSort } = this.props;
+    const { sort: oldSort } = previousProps;
+
+    if (newSort !== oldSort) {
+      this.retrieveProducts();
+    }
+  }
+
+  getTableBody() {
+    return (
+      <TableBody>
+        {
+          this.props.products.map((product: IProductModel, index: number) => {
+            return this.getProductRow(product, `product-${index}`);
+          })
+        }
+        
+      </TableBody>
+    );
+  }
+
+  getProductRow(product: IProductModel, key: number) {
     const { id, size, price, face, date } = product;
     return (
       <TableRow key={key}>
@@ -52,6 +76,24 @@ class Products extends Component {
         <TableCell align="right">{date}</TableCell>
       </TableRow>
     );
+  }
+
+  sortProducts: Function = (sort: string) => {
+    if (sort !== this.props.sort) {
+      this.props.actions.changeSorting({ sort });
+    }
+  }
+
+  retrieveProducts() {
+    const { getProducts } = this.props.actions;
+
+    const request: IGetProductsRequest = {
+      page: this.props.page,
+      size: this.props.pageSize,
+      sort: this.props.sort,
+    };
+
+    getProducts(request);
   }
   
   render() {
@@ -67,24 +109,10 @@ class Products extends Component {
           <Grid item xs={12}>
             <Paper>
               <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="left">ID</TableCell>
-                    <TableCell align="center">Face</TableCell>
-                    <TableCell align="left">Font size</TableCell>
-                    <TableCell align="right">Price</TableCell>
-                    <TableCell align="right">Date added</TableCell>
-                  </TableRow>
-                </TableHead>
+                <ProductTableHead sort={this.props.sort}
+                  sortProducts={this.sortProducts} />
 
-                <TableBody>
-                  {
-                    this.props.products.map((product: IProductModel, index: number) => {
-                      return this.getProductRow(product, `product-${index}`);
-                    })
-                  }
-                  
-                </TableBody>
+                <ProductTableBody products={this.props.products} />
               </Table>
             </Paper>
           </Grid>
@@ -97,11 +125,17 @@ class Products extends Component {
 Products.propTypes = {
   actions: PropTypes.object,
   products: PropTypes.array,
+  page: PropTypes.number,
+  pageSize: PropTypes.number,
+  sort: PropTypes.string,
 };
 
 const mapStateToProps = (state: IProductsState) => ({
   isLoading: state.products.isLoading,
   products: state.products.products,
+  page: state.products.page,
+  pageSize: state.products.pageSize,
+  sort: state.products.sort,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

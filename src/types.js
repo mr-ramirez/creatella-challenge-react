@@ -4,6 +4,9 @@ export interface IProductsState {
   isLoading: boolean,
   products: Array<IProductModel>,
   totalProducts: number,
+  sort: string,
+  pageSize: number,
+  page: number,
 }
 
 export interface IProductModel {
@@ -20,5 +23,6 @@ export interface IProductsService {
 
 export interface IGetProductsRequest {
   page: number,
-  size: number;
+  size: number,
+  sort: string,
 }
