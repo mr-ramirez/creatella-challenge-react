@@ -4,7 +4,7 @@ import ProductService from '../services/index.js';
 
 import {
   IGetProductsRequest,
-} from '../types.js';
+} from '../../../types.js';
 
 export const requestProducts = createAction('REQUEST_PRODUCTS');
 export const storeProducts = createAction('STORE_PRODUCTS');

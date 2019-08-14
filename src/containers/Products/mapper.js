@@ -1,4 +1,4 @@
-import { IProductModel } from './types';
+import { IProductModel } from '../../types';
 import DateFormatter from '../../helpers/DateFormatter';
 import CurrencyFormatter from '../../helpers/CurrencyFormatter';
 

@@ -15,7 +15,7 @@ import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
 
 import './Products.css';
-import { IProductModel, IProductsState, IGetProductsRequest } from '../types.js';
+import { IProductModel, IProductsState, IGetProductsRequest } from '../../../types.js';
 import * as ProductActions from '../actions/index.js'
 
 const styles = {
@@ -100,7 +100,7 @@ Products.propTypes = {
 };
 
 const mapStateToProps = (state: IProductsState) => ({
-  isLoading: state.isLoading,
+  isLoading: state.products.isLoading,
   products: state.products.products,
 });
 

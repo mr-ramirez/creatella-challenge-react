@@ -1,5 +1,5 @@
 // @flow
-import { IProductsState } from '../types';
+import { IProductsState } from '../../../types';
 
 import {
   requestProducts,

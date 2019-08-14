@@ -4,7 +4,7 @@ import { ConvertToProductModel } from '../mapper';
 
 import {
   IGetProductsRequest,
-} from '../types.js';
+} from '../../../types';
 
 const ProductService = {
   getProducts(request: IGetProductsRequest) {
