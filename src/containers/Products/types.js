@@ -8,8 +8,8 @@ export interface IProductsState {
 
 export interface IProductModel {
   id: string,
-  size: number,
-  price: number,
+  size: string,
+  price: string,
   faces: string,
   date: string,
 }
