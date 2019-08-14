@@ -8,6 +8,7 @@ import {
   storeProducts,
   displayErrorMessage,
   changeSorting,
+  nextPage,
 } from '../actions'
 
 const initialState: IProductsState = {
@@ -48,6 +49,12 @@ export const products = (state: IProductsState = initialState, action: Object): 
         page: 1,
         products: [],
         sort: action.payload.sort,
+      };
+
+    case nextPage.type:
+      return {
+        ...state,
+        page: state.page + 1,
       };
   
     default:

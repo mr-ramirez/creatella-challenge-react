@@ -10,6 +10,7 @@ export const requestProducts = createAction('REQUEST_PRODUCTS');
 export const storeProducts = createAction('STORE_PRODUCTS');
 export const displayErrorMessage = createAction('DISPLAY_ERROR_MESSAGE');
 export const changeSorting = createAction('CHANGE_SORTING');
+export const nextPage = createAction('NEXT_PAGE');
 
 export const getProducts = (request: IGetProductsRequest): void => {
   return async (dispatch) => {
