@@ -7,6 +7,7 @@ export interface IProductsState {
   pageSize: number,
   page: number,
   wasTheEndOfResultsReached: boolean,
+  temporalProducts: Array<IProductModel>,
 }
 
 export interface IAppState {

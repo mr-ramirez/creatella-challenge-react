@@ -12,7 +12,7 @@ const ProductRow = ({ product }) => {
       <TableCell align="left">{id}</TableCell>
 
       <TableCell align="left">
-        <Chip label={face} variant="outlined" />
+        <Chip style={{ 'fontSize': size }} label={face} variant="outlined" />
       </TableCell>
 
       <TableCell align="left">{size}</TableCell>

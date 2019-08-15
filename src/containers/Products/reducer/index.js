@@ -9,6 +9,8 @@ import {
   displayErrorMessage,
   changeSorting,
   nextPage,
+  cacheProducts,
+  storeCacheProducts,
 } from '../actions'
 
 const initialState: IProductsState = {
@@ -18,6 +20,7 @@ const initialState: IProductsState = {
   pageSize: 10,
   page: 1,
   wasTheEndOfResultsReached: false,
+  temporalProducts: [],
 };
 
 export const products = (state: IProductsState = initialState, action: Object): IProductsState => {
@@ -56,6 +59,20 @@ export const products = (state: IProductsState = initialState, action: Object): 
     case nextPage.type:
       return {
         ...state,
+        page: state.page + 1,
+      };
+
+    case cacheProducts.type:
+      return {
+        ...state,
+        temporalProducts: action.payload.products,
+      };
+
+    case storeCacheProducts.type:
+      return {
+        ...state,
+        temporalProducts: [],
+        products: [ ...state.products, ...state.temporalProducts ],
         page: state.page + 1,
       };
   
