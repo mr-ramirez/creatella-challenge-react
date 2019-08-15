@@ -7,6 +7,8 @@ export interface IProductsState {
   pageSize: number,
   page: number,
   wasTheReached: boolean,
+  ad: string,
+  randomNumbersUsed: Array<string>,
 }
 
 export interface IProductModel {

@@ -43,11 +43,18 @@ class Products extends Component {
   }
 
   componentDidUpdate(previousProps) {
-    const { sort: newSort, page: newPage } = this.props;
+    const { sort: newSort, page: newPage, pageSize } = this.props;
     const { sort: oldSort, page: oldPage } = previousProps;
 
     if (newSort !== oldSort || newPage !== oldPage) {
       this.retrieveProducts();
+    }
+
+    const currentNumberOfResults = newPage * pageSize;
+    const shouldNewAdBeDisplayed = (currentNumberOfResults % 20) === 0;
+
+    if (newPage !== oldPage && shouldNewAdBeDisplayed) {
+      this.retrieveAd();
     }
   }
 
@@ -76,6 +83,20 @@ class Products extends Component {
     };
 
     getProducts(request);
+  }
+
+  retrieveAd() {
+    const { randomNumbersUsed } = this.props;
+    const MIN = 100;
+    const MAX = 100000000;
+
+    let newRandomNumber = Math.floor(Math.random() * (MAX - MIN) + MIN);
+    let randomNumberFound = randomNumbersUsed.find((number) => number === newRandomNumber);
+
+    while (randomNumberFound !== undefined)
+      newRandomNumber = Math.floor(Math.random() * (MAX - MIN) + MIN);
+
+    this.props.actions.loadNewAd(newRandomNumber);
   }
   
   render() {
@@ -122,6 +143,7 @@ Products.propTypes = {
   pageSize: PropTypes.number,
   sort: PropTypes.string,
   wasTheReached: PropTypes.boolean,
+  randomNumbersUsed: PropTypes.array,
 };
 
 const mapStateToProps = (state: IProductsState) => ({
@@ -131,6 +153,7 @@ const mapStateToProps = (state: IProductsState) => ({
   pageSize: state.products.pageSize,
   sort: state.products.sort,
   wasTheReached: state.products.wasTheReached,
+  randomNumbersUsed: state.products.randomNumbersUsed,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

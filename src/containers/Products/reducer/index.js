@@ -9,6 +9,7 @@ import {
   displayErrorMessage,
   changeSorting,
   nextPage,
+  displayAd,
 } from '../actions'
 
 const initialState: IProductsState = {
@@ -18,6 +19,8 @@ const initialState: IProductsState = {
   pageSize: 10,
   page: 1,
   wasTheReached: false,
+  ad: '',
+  randomNumbersUsed: [],
 };
 
 export const products = (state: IProductsState = initialState, action: Object): IProductsState => {
@@ -57,6 +60,15 @@ export const products = (state: IProductsState = initialState, action: Object): 
       return {
         ...state,
         page: state.page + 1,
+      };
+
+    case displayAd.type:
+      return {
+        ...state,
+        ad: action.payload.ad,
+        randomNumbersUsed: state.randomNumbersUsed.concat([
+          action.payload.randomNunber,
+        ]),
       };
   
     default:
