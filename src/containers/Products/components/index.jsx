@@ -10,7 +10,8 @@ import Table from '@material-ui/core/Table';
 import Paper from '@material-ui/core/Paper';
 
 import './styles.css';
-import { IProductsState, IGetProductsRequest } from '../../../types.js';
+import { IGlobalState, IGetProductsRequest } from '../../../types.js';
+import * as AppActions from '../../App/actions/index.js';
 import * as ProductActions from '../actions/index.js';
 import SortTypes from '../sortTypes';
 import ProductTableHead from './ProductTableHead.jsx';
@@ -22,7 +23,7 @@ const styles = {
   },
 };
 
-class Products extends Component {
+export class Products extends Component {
   constructor(props) {
     super(props);
 
@@ -54,7 +55,7 @@ class Products extends Component {
     const shouldNewAdBeDisplayed = (currentNumberOfResults % 20) === 0;
 
     if (newPage !== oldPage && shouldNewAdBeDisplayed) {
-      this.retrieveAd();
+      this.loadAd();
     }
   }
 
@@ -85,10 +86,10 @@ class Products extends Component {
     getProducts(request);
   }
 
-  retrieveAd() {
+  loadAd() {
     const { randomNumbersUsed } = this.props;
-    const MIN = 100;
-    const MAX = 100000000;
+    const MIN = 1;
+    const MAX = 1084;
 
     let newRandomNumber = Math.floor(Math.random() * (MAX - MIN) + MIN);
     let randomNumberFound = randomNumbersUsed.find((number) => number === newRandomNumber);
@@ -122,7 +123,7 @@ class Products extends Component {
 
           <Grid item xs={12}>
             {
-              this.props.wasTheReached ?
+              this.props.wasTheEndOfResultsReached ?
                 <Typography align="center"
                   display="block"
                   variant="subtitle1">End of Catalog</Typography>
@@ -142,22 +143,22 @@ Products.propTypes = {
   page: PropTypes.number,
   pageSize: PropTypes.number,
   sort: PropTypes.string,
-  wasTheReached: PropTypes.boolean,
+  wasTheEndOfResultsReached: PropTypes.boolean,
   randomNumbersUsed: PropTypes.array,
 };
 
-const mapStateToProps = (state: IProductsState) => ({
+const mapStateToProps = (state: IGlobalState) => ({
   isLoading: state.products.isLoading,
   products: state.products.products,
   page: state.products.page,
   pageSize: state.products.pageSize,
   sort: state.products.sort,
-  wasTheReached: state.products.wasTheReached,
-  randomNumbersUsed: state.products.randomNumbersUsed,
+  wasTheEndOfResultsReached: state.products.wasTheEndOfResultsReached,
+  randomNumbersUsed: state.app.randomNumbersUsed,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  actions: bindActionCreators(ProductActions, dispatch),
+  actions: bindActionCreators({ ...AppActions, ...ProductActions }, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Products);

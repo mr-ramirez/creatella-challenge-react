@@ -6,11 +6,11 @@ import {
   getProducts,
 } from './';
 
-import ProductService from '../services/index';
+import ProductService from '../services/ProductService.js';
 
 import { IGetProductsRequest, IProductModel } from '../../../types';
 
-jest.mock('../services/index');
+jest.mock('../services/ProductService');
 
 describe('Products Actions', () => {
   describe('WHEN creating action for requesting of products', () => {

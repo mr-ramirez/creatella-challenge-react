@@ -9,7 +9,6 @@ import {
   displayErrorMessage,
   changeSorting,
   nextPage,
-  displayAd,
 } from '../actions'
 
 const initialState: IProductsState = {
@@ -18,9 +17,7 @@ const initialState: IProductsState = {
   sort: SortTypes.ID,
   pageSize: 10,
   page: 1,
-  wasTheReached: false,
-  ad: '',
-  randomNumbersUsed: [],
+  wasTheEndOfResultsReached: false,
 };
 
 export const products = (state: IProductsState = initialState, action: Object): IProductsState => {
@@ -36,8 +33,8 @@ export const products = (state: IProductsState = initialState, action: Object): 
       return {
         ...state,
         isLoading: false,
-        products: state.products.concat(action.payload.products),
-        wasTheReached: action.payload.products.length === 0,
+        products: [...state.products, ...action.payload.products],
+        wasTheEndOfResultsReached: action.payload.products.length === 0,
       };
 
     case displayErrorMessage.type:
@@ -53,22 +50,13 @@ export const products = (state: IProductsState = initialState, action: Object): 
         page: 1,
         products: [],
         sort: action.payload.sort,
-        wasTheReached: false,
+        wasTheEndOfResultsReached: false,
       };
 
     case nextPage.type:
       return {
         ...state,
         page: state.page + 1,
-      };
-
-    case displayAd.type:
-      return {
-        ...state,
-        ad: action.payload.ad,
-        randomNumbersUsed: state.randomNumbersUsed.concat([
-          action.payload.randomNunber,
-        ]),
       };
   
     default:

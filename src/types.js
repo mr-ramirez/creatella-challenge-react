@@ -6,9 +6,18 @@ export interface IProductsState {
   sort: string,
   pageSize: number,
   page: number,
-  wasTheReached: boolean,
+  wasTheEndOfResultsReached: boolean,
+}
+
+export interface IAppState {
+  isAdHidden: boolean,
   ad: string,
   randomNumbersUsed: Array<string>,
+}
+
+export interface IGlobalState {
+  app: IAppState,
+  products: IProductsState,
 }
 
 export interface IProductModel {
