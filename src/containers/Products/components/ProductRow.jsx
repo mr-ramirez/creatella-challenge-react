@@ -4,18 +4,11 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Chip from '@material-ui/core/Chip';
 
-import { IProductModel } from '../../../types';
-
-const propTypes = {
-  product: IProductModel,
-  key: PropTypes.string,
-};
-
-const ProductRow = ({ product, key }) => {
+const ProductRow = ({ product }) => {
   const { id, size, price, face, date } = product;
 
   return (
-    <TableRow key={key}>
+    <TableRow>
       <TableCell align="left">{id}</TableCell>
 
       <TableCell align="left">
@@ -32,7 +25,9 @@ const ProductRow = ({ product, key }) => {
 };
 
 
-ProductRow.propTypes = propTypes;
+ProductRow.propTypes = {
+  product: PropTypes.object,
+};
 
 
 export default ProductRow;

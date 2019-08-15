@@ -5,7 +5,7 @@ const AdService = {
     const url = `http://localhost:3000/ads/?r=${randomNumber}`;
 
     return fetch(url, { method: 'GET' })
-      .then((response: any) => response.arrayBuffer())
+      .then((response: Object) => response.arrayBuffer())
       .then((buffer) => {
         // eslint-disable-next-line no-undef
         const arrayOfBytes = [].slice.call(new Uint8Array(buffer));

@@ -143,7 +143,7 @@ Products.propTypes = {
   page: PropTypes.number,
   pageSize: PropTypes.number,
   sort: PropTypes.string,
-  wasTheEndOfResultsReached: PropTypes.boolean,
+  wasTheEndOfResultsReached: PropTypes.bool,
   randomNumbersUsed: PropTypes.array,
 };
 
@@ -157,7 +157,7 @@ const mapStateToProps = (state: IGlobalState) => ({
   randomNumbersUsed: state.app.randomNumbersUsed,
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   actions: bindActionCreators({ ...AppActions, ...ProductActions }, dispatch),
 });
 

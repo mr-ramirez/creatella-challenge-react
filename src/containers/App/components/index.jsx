@@ -11,13 +11,6 @@ import AdDisplayer from '../../../components/AdDisplayer/index.jsx'
 import { IGlobalState } from '../../../types';
 import * as AppActions from '../../App/actions/index.js';
 
-const propTypes = {
-  isLoading: PropTypes.boolean,
-  ad: PropTypes.string,
-  isAdHidden: PropTypes.boolean,
-  actions: PropTypes.object,
-};
-
 export class App extends React.Component {
   constructor(props) {
     super(props);
@@ -44,7 +37,12 @@ export class App extends React.Component {
   }
 }
 
-App.propTypes = propTypes;
+App.propTypes = {
+  isLoading: PropTypes.bool,
+  ad: PropTypes.string,
+  isAdHidden: PropTypes.bool,
+  actions: PropTypes.object,
+};
 
 const mapStateToProps = (state: IGlobalState) => ({
   isLoading: state.products.isLoading,
@@ -52,7 +50,7 @@ const mapStateToProps = (state: IGlobalState) => ({
   isAdHidden: state.app.isAdHidden,
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   actions: bindActionCreators(AppActions, dispatch),
 });
 

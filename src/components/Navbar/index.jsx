@@ -5,10 +5,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
-const propTypes = {
-  isLoading: PropTypes.boolean,
-};
-
 function Navbar(props) {
   return (
     <div>
@@ -29,6 +25,8 @@ function Navbar(props) {
   )
 }
 
-Navbar.propTypes = propTypes;
+Navbar.propTypes = {
+  isLoading: PropTypes.bool,
+};
 
 export default Navbar;
