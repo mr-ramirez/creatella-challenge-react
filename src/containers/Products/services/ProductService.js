@@ -14,7 +14,7 @@ const ProductService = {
     const url = `http://localhost:3000/products?${page}&${size}&${sortBy}`;
 
     return fetch(url, { method: 'GET' })
-      .then((response: any) => response.json())
+      .then((response: Object) => response.json())
       .then((responseAsJson) => {
         return responseAsJson.map((item) => ConvertToProductModel(item));
       });

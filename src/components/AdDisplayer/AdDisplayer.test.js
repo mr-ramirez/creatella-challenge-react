@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
+import { IconButton, Typography } from '@material-ui/core';
 
 import AdDisplayer from './index';
 
