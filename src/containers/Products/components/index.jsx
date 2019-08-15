@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Table from '@material-ui/core/Table';
 import Paper from '@material-ui/core/Paper';
 
-import './Products.css';
+import './styles.css';
 import { IProductsState, IGetProductsRequest } from '../../../types.js';
 import * as ProductActions from '../actions/index.js';
 import SortTypes from '../sortTypes';
@@ -98,6 +98,17 @@ class Products extends Component {
               </Table>
             </Paper>
           </Grid>
+
+          <Grid item xs={12}>
+            {
+              this.props.wasTheReached ?
+                <Typography align="center"
+                  display="block"
+                  variant="subtitle1">End of Catalog</Typography>
+                :
+                null
+            }
+          </Grid>
         </Grid>
       </Container>
     );
@@ -110,6 +121,7 @@ Products.propTypes = {
   page: PropTypes.number,
   pageSize: PropTypes.number,
   sort: PropTypes.string,
+  wasTheReached: PropTypes.boolean,
 };
 
 const mapStateToProps = (state: IProductsState) => ({
@@ -118,6 +130,7 @@ const mapStateToProps = (state: IProductsState) => ({
   page: state.products.page,
   pageSize: state.products.pageSize,
   sort: state.products.sort,
+  wasTheReached: state.products.wasTheReached,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

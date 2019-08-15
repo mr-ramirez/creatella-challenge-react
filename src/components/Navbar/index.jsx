@@ -7,19 +7,19 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 export default function Navbar(props) {
   return (
     <div>
-      <AppBar position="static" color="secondary">
+      <AppBar position="fixed" color="secondary">
         <Toolbar>
           <Typography variant="h6" color="inherit">
             Creatella React Challenge
           </Typography>
         </Toolbar>
+        {
+          props.isLoading ?
+            <LinearProgress />
+          :
+            null
+        }
       </AppBar>
-      {
-        props.isLoading ?
-          <LinearProgress />
-        :
-          null
-      }
     </div>
   )
 }

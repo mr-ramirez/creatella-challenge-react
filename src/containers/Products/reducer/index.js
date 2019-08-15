@@ -14,10 +14,10 @@ import {
 const initialState: IProductsState = {
   isLoading: false,
   products: [],
-  totalProducts: 0,
   sort: SortTypes.ID,
-  pageSize: 20,
+  pageSize: 10,
   page: 1,
+  wasTheReached: false,
 };
 
 export const products = (state: IProductsState = initialState, action: Object): IProductsState => {
@@ -34,6 +34,7 @@ export const products = (state: IProductsState = initialState, action: Object): 
         ...state,
         isLoading: false,
         products: state.products.concat(action.payload.products),
+        wasTheReached: action.payload.products.length === 0,
       };
 
     case displayErrorMessage.type:
@@ -49,6 +50,7 @@ export const products = (state: IProductsState = initialState, action: Object): 
         page: 1,
         products: [],
         sort: action.payload.sort,
+        wasTheReached: false,
       };
 
     case nextPage.type:

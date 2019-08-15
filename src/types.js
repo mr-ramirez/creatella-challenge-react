@@ -3,10 +3,10 @@
 export interface IProductsState {
   isLoading: boolean,
   products: Array<IProductModel>,
-  totalProducts: number,
   sort: string,
   pageSize: number,
   page: number,
+  wasTheReached: boolean,
 }
 
 export interface IProductModel {
