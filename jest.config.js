@@ -10,4 +10,10 @@ module.exports = {
     'src/components/**/*.{js,jsx}',
     'src/helpers/**/*.{js,jsx}',
   ],
+  moduleFileExtensions: [
+    'js', 'jsx', 'css',
+  ],
+  moduleNameMapper: {
+    "\\.(css|less)$": "identity-obj-proxy",
+  },
 };

@@ -1,0 +1,13 @@
+.AdContainer {
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  position: fixed;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  width: 315px;
+}
+
+.AdContent {
+  padding: 5px;
+}

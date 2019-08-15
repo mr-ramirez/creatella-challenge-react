@@ -1,10 +1,17 @@
-import { products } from './'
+import { products } from './';
+import SortTypes from '../sortTypes';
 
 describe('Products Reducer', () => {
   const initialState = {
     isLoading: false,
     products: [],
-    totalProducts: 0,
+    sort: SortTypes.ID,
+    pageSize: 10,
+    page: 1,
+    wasTheEndOfResultsReached: false,
+    ad: '',
+    randomNumbersUsed: [],
+    isAdHidden: true,
   };
 
   describe('WHEN action is for requesting products', () => {
@@ -79,6 +86,23 @@ describe('Products Reducer', () => {
       ...initialState,
       page: 1,
       sort: fakeAction.payload.sort,
+      wasTheEndOfResultsReached: false,
+    };
+
+    it('SHOULD return updated state', () => {
+      const actualState = products(initialState, fakeAction);
+      expect(actualState).toEqual(expectedState);
+    });
+  });
+
+  describe('WHEN action is for changing the sort method', () => {
+    const fakeAction  = {
+      type: 'NEXT_PAGE',
+    };
+
+    const expectedState = {
+      ...initialState,
+      page: 2,
     };
 
     it('SHOULD return updated state', () => {

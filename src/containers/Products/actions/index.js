@@ -1,10 +1,7 @@
 import { createAction } from 'redux-starter-kit';
 
-import ProductService from '../services/index.js';
-
-import {
-  IGetProductsRequest,
-} from '../../../types.js';
+import { IGetProductsRequest } from '../../../types.js';
+import ProductService from '../services/ProductService';
 
 export const requestProducts = createAction('REQUEST_PRODUCTS');
 export const storeProducts = createAction('STORE_PRODUCTS');

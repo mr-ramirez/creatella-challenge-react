@@ -17,7 +17,7 @@ const initialState: IProductsState = {
   sort: SortTypes.ID,
   pageSize: 10,
   page: 1,
-  wasTheReached: false,
+  wasTheEndOfResultsReached: false,
 };
 
 export const products = (state: IProductsState = initialState, action: Object): IProductsState => {
@@ -33,8 +33,8 @@ export const products = (state: IProductsState = initialState, action: Object): 
       return {
         ...state,
         isLoading: false,
-        products: state.products.concat(action.payload.products),
-        wasTheReached: action.payload.products.length === 0,
+        products: [...state.products, ...action.payload.products],
+        wasTheEndOfResultsReached: action.payload.products.length === 0,
       };
 
     case displayErrorMessage.type:
@@ -50,7 +50,7 @@ export const products = (state: IProductsState = initialState, action: Object): 
         page: 1,
         products: [],
         sort: action.payload.sort,
-        wasTheReached: false,
+        wasTheEndOfResultsReached: false,
       };
 
     case nextPage.type:
