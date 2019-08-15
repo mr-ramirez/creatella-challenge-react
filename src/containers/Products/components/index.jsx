@@ -7,14 +7,10 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Chip from '@material-ui/core/Chip';
 
-import './Products.css';
-import { IProductModel, IProductsState, IGetProductsRequest } from '../../../types.js';
+import './styles.css';
+import { IProductsState, IGetProductsRequest } from '../../../types.js';
 import * as ProductActions from '../actions/index.js';
 import SortTypes from '../sortTypes';
 import ProductTableHead from './ProductTableHead.jsx';
@@ -38,44 +34,30 @@ class Products extends Component {
   }
 
   componentDidMount() {
+    document.addEventListener('scroll', this.handleScroll);
     this.retrieveProducts();
   }
 
-  componentDidUpdate(previousProps) {
-    const { sort: newSort } = this.props;
-    const { sort: oldSort } = previousProps;
+  componentWillUnmount() {
+    document.removeEventListener('scroll', this.handleScroll);
+  }
 
-    if (newSort !== oldSort) {
+  componentDidUpdate(previousProps) {
+    const { sort: newSort, page: newPage } = this.props;
+    const { sort: oldSort, page: oldPage } = previousProps;
+
+    if (newSort !== oldSort || newPage !== oldPage) {
       this.retrieveProducts();
     }
   }
 
-  getTableBody() {
-    return (
-      <TableBody>
-        {
-          this.props.products.map((product: IProductModel, index: number) => {
-            return this.getProductRow(product, `product-${index}`);
-          })
-        }
-        
-      </TableBody>
-    );
-  }
+  handleScroll = () => {
+    const element = document.getElementById('products-grid');
+    const limitHeight = element.getBoundingClientRect().bottom;
 
-  getProductRow(product: IProductModel, key: number) {
-    const { id, size, price, face, date } = product;
-    return (
-      <TableRow key={key}>
-        <TableCell align="left">{id}</TableCell>
-        <TableCell align="left">
-          <Chip label={face} variant="outlined" />
-        </TableCell>
-        <TableCell align="left">{size}</TableCell>
-        <TableCell align="right">{price}</TableCell>
-        <TableCell align="right">{date}</TableCell>
-      </TableRow>
-    );
+    if (limitHeight <= window.innerHeight) {
+      this.props.actions.nextPage();
+    }
   }
 
   sortProducts: Function = (sort: string) => {
@@ -98,7 +80,7 @@ class Products extends Component {
   
   render() {
     return (
-      <Container>
+      <Container id="products-grid">
         <Grid container spacing={2}>
           <Grid style={styles.PageTitle} item xs={12}>
             <Typography variant="h4" align="center">
@@ -116,6 +98,17 @@ class Products extends Component {
               </Table>
             </Paper>
           </Grid>
+
+          <Grid item xs={12}>
+            {
+              this.props.wasTheReached ?
+                <Typography align="center"
+                  display="block"
+                  variant="subtitle1">End of Catalog</Typography>
+                :
+                null
+            }
+          </Grid>
         </Grid>
       </Container>
     );
@@ -128,6 +121,7 @@ Products.propTypes = {
   page: PropTypes.number,
   pageSize: PropTypes.number,
   sort: PropTypes.string,
+  wasTheReached: PropTypes.boolean,
 };
 
 const mapStateToProps = (state: IProductsState) => ({
@@ -136,6 +130,7 @@ const mapStateToProps = (state: IProductsState) => ({
   page: state.products.page,
   pageSize: state.products.pageSize,
   sort: state.products.sort,
+  wasTheReached: state.products.wasTheReached,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
