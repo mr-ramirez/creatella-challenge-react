@@ -12,6 +12,7 @@ describe('Products Reducer', () => {
     ad: '',
     randomNumbersUsed: [],
     isAdHidden: true,
+    temporalProducts: [],
   };
 
   describe('WHEN action is for requesting products', () => {
@@ -107,6 +108,52 @@ describe('Products Reducer', () => {
 
     it('SHOULD return updated state', () => {
       const actualState = products(initialState, fakeAction);
+      expect(actualState).toEqual(expectedState);
+    });
+  });
+
+  describe('WHEN action is for caching products', () => {
+    const fakeAction  = {
+      type: 'CACHE_PRODUCTS',
+      payload: {
+        products: [{
+          id: 1,
+        }],
+      },
+    };
+
+    const expectedState = {
+      ...initialState,
+      temporalProducts: fakeAction.payload.products,
+    };
+
+    it('SHOULD return updated state', () => {
+      const actualState = products(initialState, fakeAction);
+      expect(actualState).toEqual(expectedState);
+    });
+  });
+
+  describe('WHEN action is for storing cache products', () => {
+    const fakeAction  = {
+      type: 'STORE_CACHE_PRODUCTS',
+    };
+
+    const fakeState = {
+      ...initialState,
+      temporalProducts: [{
+        id: 1,
+      }],
+    };
+
+    const expectedState = {
+      ...initialState,
+      products: fakeState.temporalProducts,
+      temporalProducts: [],
+      page: 2,
+    };
+
+    it('SHOULD return updated state', () => {
+      const actualState = products(fakeState, fakeAction);
       expect(actualState).toEqual(expectedState);
     });
   });

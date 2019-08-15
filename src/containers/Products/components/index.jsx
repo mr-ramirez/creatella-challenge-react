@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import IdleTimer from 'react-idle-timer'
 
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -44,10 +45,29 @@ export class Products extends Component {
   }
 
   componentDidUpdate(previousProps) {
-    const { sort: newSort, page: newPage, pageSize } = this.props;
-    const { sort: oldSort, page: oldPage } = previousProps;
+    const {
+      sort: newSort,
+      page: newPage,
+      pageSize,
+      temporalProducts: newTemporalProducts,
+      // eslint-disable-next-line react/prop-types
+      isLoading,
+    } = this.props;
 
-    if (newSort !== oldSort || newPage !== oldPage) {
+    const {
+      sort: oldSort,
+      page: oldPage,
+      temporalProducts: oldTemporalProducts,
+    } = previousProps;
+
+    const haveTemporalProductsChanged = oldTemporalProducts.length !== newTemporalProducts.length;
+
+    const hasSortMethodChange = newSort !== oldSort;
+
+    const hasPageChanged = newPage !== oldPage;
+
+    if (!haveTemporalProductsChanged && !isLoading
+      && (hasSortMethodChange || hasPageChanged)) {
       this.retrieveProducts();
     }
 
@@ -75,6 +95,19 @@ export class Products extends Component {
   }
 
   retrieveProducts() {
+    const { temporalProducts } = this.props;
+
+    if (temporalProducts.length > 0)
+      this.loadProductsFromCache();
+    else
+      this.loadProductsFromApi();
+  }
+
+  loadProductsFromCache() {
+    this.props.actions.storeCacheProducts();
+  }
+
+  loadProductsFromApi() {
     const { getProducts } = this.props.actions;
 
     const request: IGetProductsRequest = {
@@ -84,6 +117,18 @@ export class Products extends Component {
     };
 
     getProducts(request);
+  }
+
+  retrieveProductsLazily = () => {
+    const { lazilyGetProducts } = this.props.actions;
+
+    const request: IGetProductsRequest = {
+      page: this.props.page,
+      size: this.props.pageSize,
+      sort: this.props.sort,
+    };
+
+    lazilyGetProducts(request);
   }
 
   loadAd() {
@@ -99,10 +144,20 @@ export class Products extends Component {
 
     this.props.actions.loadNewAd(newRandomNumber);
   }
+
+  onIdle = () => {
+    if (this.props.temporalProducts.length === 0)
+      this.retrieveProductsLazily();
+  }
   
   render() {
     return (
       <Container id="products-grid">
+        <IdleTimer
+          element={document}
+          onIdle={this.onIdle}
+          timeout={5000} />
+
         <Grid container spacing={2}>
           <Grid style={styles.PageTitle} item xs={12}>
             <Typography variant="h4" align="center">
@@ -145,6 +200,7 @@ Products.propTypes = {
   sort: PropTypes.string,
   wasTheEndOfResultsReached: PropTypes.bool,
   randomNumbersUsed: PropTypes.array,
+  temporalProducts: PropTypes.array,
 };
 
 const mapStateToProps = (state: IGlobalState) => ({
@@ -155,6 +211,7 @@ const mapStateToProps = (state: IGlobalState) => ({
   sort: state.products.sort,
   wasTheEndOfResultsReached: state.products.wasTheEndOfResultsReached,
   randomNumbersUsed: state.app.randomNumbersUsed,
+  temporalProducts: state.products.temporalProducts,
 });
 
 const mapDispatchToProps = (dispatch: Function) => ({
